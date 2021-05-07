@@ -59,18 +59,18 @@ const respondToClient = () => {
     ];
   
     //TODO: Completar esta función para que devuelva un string aleatorio del arreglo anterior
-  
+    const indiceAleatorio = Math.floor(Math.random() * commonAnswers.length);
+    return commonAnswers[indiceAleatorio];
   };
   
 
 wss.on('connection', (ws: any) => {
-
-    console.log(ws._socket.remoteAddress); 
-    console.log(ws._socket.remotePort); 
   ws.send('Hello Client');
+  const clientId = `${ws._socket.remoteAddress}:${ws._socket.remotePort}`;
 
   ws.on('message', (message: any) => {
-    console.log(`[Client]: ${message}`);
+    console.log(`[Client:${clientId}]: ${message}`);
+    ws.send(respondToClient());
   });
 
   ws.on('end', () => {
